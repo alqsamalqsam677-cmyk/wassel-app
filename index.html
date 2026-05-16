@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وصّل - توصيل سريع</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--green:#1DB954;--dark-green:#158a3e;--black:#0a0a0a;--dark:#111;--card:#1a1a1a;--text:#f0f0f0;--muted:#888;--accent:#FFD700}
+body{font-family:'Cairo',sans-serif;background:var(--black);color:var(--text)}
+.topbar{background:var(--dark);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #222;position:sticky;top:0;z-index:100}
+.logo{font-size:26px;font-weight:900;color:var(--green)}
+.location{font-size:13px;color:#888}
+.location span{color:var(--text);font-weight:600}
+.search-wrap{padding:14px 20px;background:var(--dark)}
+.search-box{background:var(--card);border-radius:14px;display:flex;align-items:center;gap:10px;padding:12px 16px;border:1px solid #2a2a2a}
+.search-box input{background:none;border:none;outline:none;color:var(--text);font-family:'Cairo',sans-serif;font-size:14px;flex:1}
+.hero{margin:16px 20px;background:linear-gradient(135deg,var(--dark-green),var(--green));border-radius:20px;padding:24px 20px}
+.hero h2{font-size:22px;font-weight:900;color:#fff}
+.hero p{font-size:13px;color:rgba(255,255,255,0.8);margin-top:6px}
+.stats-bar{margin:16px 20px;background:var(--card);border-radius:16px;padding:16px;display:flex;justify-content:space-around;border:1px solid #2a2a2a}
+.stat{text-align:center}
+.stat .num{font-size:22px;font-weight:900;color:var(--green)}
+.stat .lbl{font-size:11px;color:var(--muted)}
+.section{padding:0 20px;margin-top:24px}
+.section-title{font-size:17px;font-weight:700;margin-bottom:14px}
+.cats{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.cat{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:70px;cursor:pointer}
+.cat-icon{width:60px;height:60px;border-radius:16px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid transparent}
+.cat.active .cat-icon{background:rgba(29,185,84,0.15);border-color:var(--green)}
+.cat span{font-size:12px;color:var(--muted)}
+.cat.active span{color:var(--green)}
+.stores{display:flex;flex-direction:column;gap:14px}
+.store-card{background:var(--card);border-radius:18px;overflow:hidden;border:1px solid #2a2a2a;cursor:pointer}
+.store-img{width:100%;height:130px;display:flex;align-items:center;justify-content:center;font-size:50px;position:relative}
+.store-img.food{background:linear-gradient(135deg,#1a2a1a,#2a3a2a)}
+.store-img.pharma{background:linear-gradient(135deg,#1a1a2a,#2a2a3a)}
+.store-img.grocery{background:linear-gradient(135deg,#2a1a1a,#3a2a2a)}
+.store-badge{position:absolute;top:10px;right:10px;background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.store-badge.urgent{background:#e53e3e}
+.store-info{padding:14px}
+.store-name{font-size:16px;font-weight:700}
+.store-meta{display:flex;align-items:center;gap:12px;margin-top:6px;font-size:12px;color:var(--muted)}
+.store-meta .rating{color:var(--accent);font-weight:700}
+.emergency{margin:0 20px;background:linear-gradient(135deg,#2a0a0a,#3a1a1a);border:1px solid #e53e3e44;border-radius:18px;padding:18px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.emergency h3{font-size:16px;font-weight:700;color:#fc8181}
+.emergency p{font-size:12px;color:var(--muted);margin-top:4px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--dark);border-top:1px solid #222;display:flex;padding:12px 0 20px;z-index:100}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font-size:11px;color:var(--muted)}
+.nav-item .nav-icon{font-size:22px}
+.nav-item.active{color:var(--green)}
+.spacer{height:80px}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#fff;padding:12px 24px;border-radius:30px;font-weight:600;font-size:14px;opacity:0;transition:all 0.3s;z-index:500;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="topbar">
+<div class="location">📍 <span>صنعاء</span></div>
+<div class="logo">وصّل</div>
+<span>🔔</span>
+</div>
+<div class="search-wrap">
+<div class="search-box">
+<span>🔍</span>
+<input type="text" placeholder="ابحث عن محل أو منتج...">
+</div>
+</div>
+<div class="hero">
+<h2>توصيل سريع لباب بيتك 🏠</h2>
+<p>من أي محل أو صيدلية في مدينتك</p>
+</div>
+<div class="stats-bar">
+<div class="stat"><div class="num">120+</div><div class="lbl">محل مسجل</div></div>
+<div class="stat"><div class="num">85</div><div class="lbl">سائق نشط</div></div>
+<div class="stat"><div class="num">4.8⭐</div><div class="lbl">تقييم</div></div>
+</div>
+<div class="section">
+<div class="section-title">التصنيفات</div>
+<div class="cats">
+<div class="cat active"><div class="cat-icon">🍔</div><span>مطاعم</span></div>
+<div class="cat"><div class="cat-icon">💊</div><span>صيدليات</span></div>
+<div class="cat"><div class="cat-icon">🛒</div><span>بقالة</span></div>
+<div class="cat"><div class="cat-icon">🥦</div><span>خضار</span></div>
+<div class="cat"><div class="cat-icon">🥩</div><span>لحوم</span></div>
+<div class="cat"><div class="cat-icon">🍯</div><span>عسل</span></div>
+<div class="cat"><div class="cat-icon">📦</div><span>متنوع</span></div>
+</div>
+</div>
+<div class="section" style="margin-top:20px;">
+<div class="emergency" onclick="showToast('جاري الاتصال بأقرب صيدلية 🚨')">
+<span style="font-size:40px">🚨</span>
+<div><h3>توصيل طوارئ</h3><p>أدوية عاجلة في أسرع وقت</p></div>
+</div>
+</div>
+<div class="section">
+<div class="section-title">قريب منك</div>
+<div class="stores">
+<div class="store-card" onclick="showToast('افتح مطعم الأصيل')">
+<div class="store-img food">🍖<div class="store-badge">مفتوح</div></div>
+<div class="store-info"><div class="store-name">مطعم الأصيل</div>
+<div class="store-meta"><span class="rating">⭐ 4.9</span><span>20-30 دقيقة</span><span>200 ريال</span></div></div>
+</div>
+<div class="store-card" onclick="showToast('افتح صيدلية الشفاء')">
+<div class="store-img pharma">💊<div class="store-badge urgent">طوارئ 24/7</div></div>
+<div class="store-info"><div class="store-name">صيدلية الشفاء</div>
+<div class="store-meta"><span class="rating">⭐ 4.8</span><span>15-25 دقيقة</span><span>150 ريال</span></div></div>
+</div>
+<div class="store-card" onclick="showToast('افتح بقالة النور')">
+<div class="store-img grocery">🛒<div class="store-badge">الأكثر طلباً</div></div>
+<div class="store-info"><div class="store-name">بقالة النور</div>
+<div class="store-meta"><span class="rating">⭐ 4.7</span><span>25-35 دقيقة</span><span>100 ريال</span></div></div>
+</div>
+</div>
+</div>
+<div class="spacer"></div>
+<div class="bottom-nav">
+<div class="nav-item active"><div class="nav-icon">🏠</div>الرئيسية</div>
+<div class="nav-item" onclick="showToast('طلباتي')"><div class="nav-icon">📋</div>طلباتي</div>
+<div class="nav-item" onclick="showToast('تتبع')"><div class="nav-icon">🛵</div>تتبع</div>
+<div class="nav-item" onclick="showToast('المفضلة')"><div class="nav-icon">❤️</div>المفضلة</div>
+<div class="nav-item" onclick="showToast('حسابي')"><div class="nav-icon">👤</div>حسابي</div>
+</div>
+<div id="toast"></div>
+<script>
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+</script>
+</body>
+                                             </html>
