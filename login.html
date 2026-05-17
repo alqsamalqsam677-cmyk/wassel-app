@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وصّل - تسجيل الدخول</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;background:#0a0a0a;color:#f0f0f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.logo{font-size:52px;font-weight:900;color:#1DB954;margin-bottom:8px}
+.tagline{font-size:14px;color:#666;margin-bottom:40px}
+.card{width:100%;max-width:400px;background:#1a1a1a;border-radius:24px;padding:28px;border:1px solid #2a2a2a}
+.tabs{display:flex;background:#111;border-radius:14px;padding:4px;margin-bottom:24px}
+.tab{flex:1;padding:10px;border:none;background:none;color:#666;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;border-radius:10px;cursor:pointer;transition:all 0.2s}
+.tab.active{background:#1DB954;color:#fff}
+.input-group{margin-bottom:16px}
+.input-group label{font-size:13px;color:#888;margin-bottom:6px;display:block}
+.input-group input{width:100%;padding:14px 16px;background:#111;border:1px solid #2a2a2a;border-radius:12px;color:#f0f0f0;font-family:'Cairo',sans-serif;font-size:14px;outline:none;transition:border 0.2s}
+.input-group input:focus{border-color:#1DB954}
+.role-select{margin-bottom:20px}
+.role-select label{font-size:13px;color:#888;margin-bottom:10px;display:block}
+.roles{display:flex;gap:8px}
+.role-btn{flex:1;padding:12px 8px;background:#111;border:1px solid #2a2a2a;border-radius:12px;color:#888;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s}
+.role-btn.active{border-color:#1DB954;color:#1DB954;background:rgba(29,185,84,0.1)}
+.submit-btn{width:100%;padding:16px;background:#1DB954;color:#fff;border:none;border-radius:14px;font-family:'Cairo',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;transition:all 0.2s}
+.submit-btn:active{transform:scale(0.98)}
+.divider{text-align:center;color:#444;font-size:12px;margin:16px 0}
+.back-link{text-align:center;margin-top:16px;font-size:13px;color:#666}
+.back-link a{color:#1DB954;text-decoration:none;font-weight:700}
+#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1DB954;color:#fff;padding:12px 24px;border-radius:30px;font-weight:600;font-size:14px;opacity:0;transition:all 0.3s;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="logo">وصّل</div>
+<div class="tagline">توصيل سريع في كل مكان 🛵</div>
+<div class="card">
+<div class="tabs">
+<button class="tab active" onclick="switchTab('login',this)">تسجيل الدخول</button>
+<button class="tab" onclick="switchTab('register',this)">حساب جديد</button>
+</div>
+<div id="login-form">
+<div class="input-group">
+<label>رقم الهاتف</label>
+<input type="tel" placeholder="07xxxxxxxx">
+</div>
+<div class="input-group">
+<label>كلمة المرور</label>
+<input type="password" placeholder="••••••••">
+</div>
+<button class="submit-btn" onclick="doLogin()">دخول ←</button>
+</div>
+<div id="register-form" style="display:none">
+<div class="input-group">
+<label>الاسم الكامل</label>
+<input type="text" placeholder="اسمك هنا">
+</div>
+<div class="input-group">
+<label>رقم الهاتف</label>
+<input type="tel" placeholder="07xxxxxxxx">
+</div>
+<div class="input-group">
+<label>كلمة المرور</label>
+<input type="password" placeholder="••••••••">
+</div>
+<div class="role-select">
+<label>أنا...</label>
+<div class="roles">
+<button class="role-btn active" onclick="selectRole(this)">👤 عميل</button>
+<button class="role-btn" onclick="selectRole(this)">🛵 سائق</button>
+<button class="role-btn" onclick="selectRole(this)">🏪 صاحب محل</button>
+</div>
+</div>
+<button class="submit-btn" onclick="doRegister()">إنشاء حساب ←</button>
+</div>
+<div class="divider">— أو —</div>
+<div class="back-link"><a href="index.html">← العودة للرئيسية</a></div>
+</div>
+<div id="toast"></div>
+<script>
+function switchTab(tab,el){
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+el.classList.add('active');
+document.getElementById('login-form').style.display=tab==='login'?'block':'none';
+document.getElementById('register-form').style.display=tab==='register'?'block':'none';
+}
+function selectRole(el){
+document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));
+el.classList.add('active');
+}
+function doLogin(){
+showToast('جاري تسجيل الدخول... ✅');
+setTimeout(()=>window.location.href='index.html',1500);
+}
+function doRegister(){
+showToast('تم إنشاء الحساب بنجاح! 🎉');
+setTimeout(()=>window.location.href='index.html',1500);
+}
+function showToast(msg){
+const t=document.getElementById('toast');
+t.textContent=msg;t.classList.add('show');
+setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>
