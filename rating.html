@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وصّل - تقييم الطلب</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;background:#0a0a0a;color:#f0f0f0;min-height:100vh}
+.topbar{background:#111;padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #1e1e1e;position:sticky;top:0;z-index:100}
+.back{width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:none;color:#f0f0f0;font-size:18px;cursor:pointer}
+.topbar h2{font-size:18px;font-weight:700}
+.success-banner{background:linear-gradient(135deg,#0d1f0d,#1a3a1a);padding:30px 20px;text-align:center;border-bottom:1px solid #1e1e1e}
+.success-icon{font-size:70px;animation:pop 0.5s ease}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.success-title{font-size:22px;font-weight:900;color:#1DB954;margin-top:12px}
+.success-sub{font-size:13px;color:#666;margin-top:6px}
+.order-summary{margin:16px 20px;background:#1a1a1a;border-radius:16px;padding:16px;border:1px solid #2a2a2a;display:flex;align-items:center;gap:12px}
+.order-icon{width:50px;height:50px;border-radius:14px;background:#222;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.order-name{font-size:15px;font-weight:700}
+.order-detail{font-size:12px;color:#666;margin-top:3px}
+.order-price{font-size:16px;font-weight:700;color:#1DB954;margin-right:auto}
+.section{padding:0 20px;margin-top:20px}
+.section-title{font-size:16px;font-weight:700;margin-bottom:14px}
+.rating-card{background:#1a1a1a;border-radius:18px;padding:20px;border:1px solid #2a2a2a;margin-bottom:14px}
+.rating-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.rating-avatar{width:52px;height:52px;border-radius:50%;background:#222;border:2px solid #1DB954;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.rating-name{font-size:15px;font-weight:700}
+.rating-role{font-size:12px;color:#666;margin-top:2px}
+.stars{display:flex;gap:8px;justify-content:center;margin-bottom:16px}
+.star{font-size:40px;cursor:pointer;transition:transform 0.2s;filter:grayscale(1);opacity:0.4}
+.star.active{filter:grayscale(0);opacity:1;transform:scale(1.1)}
+.rating-labels{display:flex;justify-content:space-between;font-size:11px;color:#666;margin-top:-10px;margin-bottom:16px;padding:0 4px}
+.quick-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.tag{padding:8px 14px;background:#111;border:1px solid #2a2a2a;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;color:#888;transition:all 0.2s}
+.tag.active{border-color:#1DB954;color:#1DB954;background:rgba(29,185,84,0.1)}
+.comment-box{width:100%;padding:13px 16px;background:#111;border:1px solid #2a2a2a;border-radius:12px;color:#f0f0f0;font-family:'Cairo',sans-serif;font-size:13px;outline:none;resize:none;height:80px;transition:border 0.2s}
+.comment-box:focus{border-color:#1DB954}
+.submit-btn{width:100%;padding:16px;background:#1DB954;color:#fff;border:none;border-radius:14px;font-family:'Cairo',sans-serif;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(29,185,84,0.3);transition:all 0.2s;margin-top:8px}
+.submit-btn:active{transform:scale(0.98)}
+.skip-btn{width:100%;padding:12px;background:none;border:none;color:#666;font-family:'Cairo',sans-serif;font-size:14px;cursor:pointer;margin-top:8px}
+.spacer{height:40px}
+#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1DB954;color:#fff;padding:12px 24px;border-radius:30px;font-weight:600;font-size:14px;opacity:0;transition:all 0.3s;z-index:500;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#success-screen{position:fixed;inset:0;background:#0a0a0a;z-index:600;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+#success-screen.show{display:flex}
+.final-icon{font-size:90px;animation:pop 0.5s ease}
+.final-title{font-size:26px;font-weight:900;color:#1DB954}
+.final-sub{font-size:14px;color:#666;text-align:center;padding:0 40px}
+.final-btn{padding:14px 48px;background:#1DB954;color:#fff;border:none;border-radius:14px;font-family:'Cairo',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="back" onclick="window.location.href='index.html'">←</button>
+  <h2>تقييم طلبك</h2>
+</div>
+
+<div class="success-banner">
+  <div class="success-icon">✅</div>
+  <div class="success-title">وصل طلبك بنجاح!</div>
+  <div class="success-sub">شاركنا رأيك لنحسّن خدمتنا</div>
+</div>
+
+<div class="order-summary">
+  <div class="order-icon">🍖</div>
+  <div>
+    <div class="order-name">مطعم الأصيل</div>
+    <div class="order-detail">دجاج مشوي + أرز • طلب #1042</div>
+  </div>
+  <div class="order-price">3,500 ر</div>
+</div>
+
+<div class="section">
+  <div class="section-title">⭐ قيّم السائق</div>
+  <div class="rating-card">
+    <div class="rating-header">
+      <div class="rating-avatar">👨</div>
+      <div>
+        <div class="rating-name">أحمد محمد</div>
+        <div class="rating-role">🛵 سائق توصيل</div>
+      </div>
+    </div>
+    <div class="stars" id="driver-stars">
+      <span class="star" onclick="rateStar('driver',1)">⭐</span>
+      <span class="star" onclick="rateStar('driver',2)">⭐</span>
+      <span class="star" onclick="rateStar('driver',3)">⭐</span>
+      <span class="star" onclick="rateStar('driver',4)">⭐</span>
+      <span class="star" onclick="rateStar('driver',5)">⭐</span>
+    </div>
+    <div class="rating-labels"><span>سيء</span><span>ممتاز</span></div>
+    <div class="quick-tags" id="driver-tags">
+      <span class="tag" onclick="toggleTag(this)">⚡ سريع</span>
+      <span class="tag" onclick="toggleTag(this)">😊 مؤدب</span>
+      <span class="tag" onclick="toggleTag(this)">✅ دقيق</span>
+      <span class="tag" onclick="toggleTag(this)">📦 حافظ الطلب</span>
+      <span class="tag" onclick="toggleTag(this)">📞 متجاوب</span>
+    </div>
+    <textarea class="comment-box" placeholder="أضف تعليقاً على السائق (اختياري)..."></textarea>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">🏪 قيّم المطعم</div>
+  <div class="rating-card">
+    <div class="rating-header">
+      <div class="rating-avatar">🍖</div>
+      <div>
+        <div class="rating-name">مطعم الأصيل</div>
+        <div class="rating-role">🍽️ مطعم</div>
+      </div>
+    </div>
+    <div class="stars" id="store-stars">
+      <span class="star" onclick="rateStar('store',1)">⭐</span>
+      <span class="star" onclick="rateStar('store',2)">⭐</span>
+      <span class="star" onclick="rateStar('store',3)">⭐</span>
+      <span class="star" onclick="rateStar('store',4)">⭐</span>
+      <span class="star" onclick="rateStar('store',5)">⭐</span>
+    </div>
+    <div class="rating-labels"><span>سيء</span><span>ممتاز</span></div>
+    <div class="quick-tags" id="store-tags">
+      <span class="tag" onclick="toggleTag(this)">😋 طعم رائع</span>
+      <span class="tag" onclick="toggleTag(this)">🔥 طازج</span>
+      <span class="tag" onclick="toggleTag(this)">💰 سعر مناسب</span>
+      <span class="tag" onclick="toggleTag(this)">📦 تغليف ممتاز</span>
+      <span class="tag" onclick="toggleTag(this)">⏰ جاهز بسرعة</span>
+    </div>
+    <textarea class="comment-box" placeholder="أضف تعليقاً على المطعم (اختياري)..."></textarea>
+  </div>
+</div>
+
+<div class="section">
+  <button class="submit-btn" onclick="submitRating()">⭐ إرسال التقييم</button>
+  <button class="skip-btn" onclick="window.location.href='index.html'">تخطي الآن</button>
+</div>
+
+<div class="spacer"></div>
+
+<div id="success-screen">
+  <div class="final-icon">🎉</div>
+  <div class="final-title">شكراً على تقييمك!</div>
+  <div class="final-sub">تقييمك يساعدنا نحسّن الخدمة لك ولجميع مستخدمي وصّل</div>
+  <button class="final-btn" onclick="window.location.href='index.html'">العودة للرئيسية</button>
+</div>
+
+<div id="toast"></div>
+<script>
+let driverRating=0,storeRating=0;
+function rateStar(type,val){
+  if(type==='driver'){driverRating=val;updateStars('driver-stars',val)}
+  else{storeRating=val;updateStars('store-stars',val)}
+}
+function updateStars(id,val){
+  const stars=document.getElementById(id).querySelectorAll('.star');
+  stars.forEach((s,i)=>{s.classList.toggle('active',i<val)})
+}
+function toggleTag(el){el.classList.toggle('active')}
+function submitRating(){
+  if(driverRating===0&&storeRating===0){showToast('اختر تقييماً أولاً ⭐');return}
+  document.getElementById('success-screen').classList.add('show');
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+</script>
+</body>
+      </html>
