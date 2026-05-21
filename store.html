@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>وصّل - مطعم الأصيل</title>
+<title>وصّل - المحل</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Cairo',sans-serif;background:#0a0a0a;color:#f0f0f0;min-height:100vh}
-.hero{height:200px;background:linear-gradient(135deg,#1a2a1a,#2a3a2a);position:relative;display:flex;align-items:center;justify-content:center;font-size:80px}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent)}
+.hero{height:200px;position:relative;display:flex;align-items:center;justify-content:center;font-size:80px}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85),transparent)}
 .back{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,0.5);border:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2}
 .fav{position:absolute;top:16px;left:16px;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,0.5);border:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2}
 .store-info{padding:16px 20px;background:#111;border-bottom:1px solid #1e1e1e}
@@ -44,7 +44,9 @@ body{font-family:'Cairo',sans-serif;background:#0a0a0a;color:#f0f0f0;min-height:
 .item-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:4px}
 .badge-popular{background:rgba(234,179,8,0.15);color:#eab308}
 .badge-new{background:rgba(59,130,246,0.15);color:#3B82F6}
-.badge-spicy{background:rgba(239,68,68,0.15);color:#ef4444}
+.badge-hot{background:rgba(239,68,68,0.15);color:#ef4444}
+.badge-organic{background:rgba(34,197,94,0.15);color:#22c55e}
+.badge-offer{background:rgba(168,85,247,0.15);color:#a855f7}
 .cart-bar{position:fixed;bottom:0;left:0;right:0;background:#1DB954;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;transform:translateY(100%);transition:transform 0.3s;z-index:100;cursor:pointer}
 .cart-bar.show{transform:translateY(0)}
 .cart-info{display:flex;align-items:center;gap:12px}
@@ -57,170 +59,107 @@ body{font-family:'Cairo',sans-serif;background:#0a0a0a;color:#f0f0f0;min-height:
 </style>
 </head>
 <body>
-
-<div class="hero">
-  🍖
-  <div class="hero-overlay"></div>
-  <button class="back" onclick="window.location.href='index.html'">←</button>
-  <button class="fav" id="fav-btn" onclick="toggleFav()">🤍</button>
+<div class="hero" id="hero">
+<span id="hero-emoji">🏪</span>
+<div class="hero-overlay"></div>
+<button class="back" onclick="window.location.href='index.html'">←</button>
+<button class="fav" id="fav-btn" onclick="toggleFav()">🤍</button>
 </div>
-
 <div class="store-info">
-  <div class="store-name">مطعم الأصيل</div>
-  <div class="store-meta">
-    <span class="meta-item rating">⭐ 4.9 (240 تقييم)</span>
-    <span class="meta-item">•</span>
-    <span class="meta-item open">● مفتوح الآن</span>
-    <span class="meta-item">•</span>
-    <span class="meta-item">🕐 20-30 دقيقة</span>
-    <span class="meta-item">•</span>
-    <span class="meta-item">🛵 200 ريال توصيل</span>
-  </div>
-  <div class="store-tags">
-    <span class="store-tag">🍖 مشويات</span>
-    <span class="store-tag">🍚 أرز</span>
-    <span class="store-tag">🥩 لحوم</span>
-    <span class="store-tag">🥤 مشروبات</span>
-  </div>
+<div class="store-name" id="store-name">المحل</div>
+<div class="store-meta">
+<span class="meta-item rating">⭐ 4.8 (180 تقييم)</span>
+<span class="meta-item">•</span>
+<span class="meta-item open">● مفتوح الآن</span>
+<span class="meta-item">•</span>
+<span class="meta-item">🕐 20-35 دقيقة</span>
+<span class="meta-item">•</span>
+<span class="meta-item">🛵 500 ريال توصيل</span>
 </div>
-
+<div class="store-tags" id="store-tags"></div>
+</div>
 <div class="search-wrap">
-  <div class="search-box">
-    <span>🔍</span>
-    <input type="text" placeholder="ابحث في قائمة المطعم...">
-  </div>
+<div class="search-box">
+<span>🔍</span>
+<input type="text" id="search-input" placeholder="ابحث..." oninput="filterItems()">
 </div>
-
-<div class="cats">
-  <button class="cat-btn active" onclick="selectCat(this)">الكل</button>
-  <button class="cat-btn" onclick="selectCat(this)">🍗 دجاج</button>
-  <button class="cat-btn" onclick="selectCat(this)">🥩 لحوم</button>
-  <button class="cat-btn" onclick="selectCat(this)">🍚 أرز</button>
-  <button class="cat-btn" onclick="selectCat(this)">🥤 مشروبات</button>
-  <button class="cat-btn" onclick="selectCat(this)">🍰 حلويات</button>
 </div>
-
-<div class="section">
-  <div class="section-title">الأكثر طلباً 🔥</div>
-  <div class="items-grid">
-
-    <div class="item-card">
-      <div class="item-img">🍗</div>
-      <div class="item-info">
-        <div class="item-name">دجاج مشوي كامل</div>
-        <div class="item-desc">دجاج طازج مشوي على الفحم مع البهارات اليمنية</div>
-        <span class="item-badge badge-popular">🔥 الأكثر طلباً</span>
-        <div class="item-footer">
-          <div class="item-price">2,500 ر</div>
-          <button class="add-btn" onclick="addToCart(this,'دجاج مشوي كامل',2500)">+</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="item-card">
-      <div class="item-img">🍖</div>
-      <div class="item-info">
-        <div class="item-name">كبسة لحم</div>
-        <div class="item-desc">أرز بسمتي مع لحم الضأن والتوابل اليمنية الأصيلة</div>
-        <span class="item-badge badge-popular">⭐ الأعلى تقييماً</span>
-        <div class="item-footer">
-          <div class="item-price">4,500 ر</div>
-          <button class="add-btn" onclick="addToCart(this,'كبسة لحم',4500)">+</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="item-card">
-      <div class="item-img">🍚</div>
-      <div class="item-info">
-        <div class="item-name">مندي دجاج</div>
-        <div class="item-desc">دجاج مطبوخ على البخار مع الأرز والمرق الشهي</div>
-        <span class="item-badge badge-new">✨ جديد</span>
-        <div class="item-footer">
-          <div class="item-price">3,500 ر</div>
-          <button class="add-btn" onclick="addToCart(this,'مندي دجاج',3500)">+</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<div class="section" style="margin-top:24px;">
-  <div class="section-title">مشروبات 🥤</div>
-  <div class="items-grid">
-
-    <div class="item-card">
-      <div class="item-img">🧃</div>
-      <div class="item-info">
-        <div class="item-name">عصير ليمون بالنعناع</div>
-        <div class="item-desc">عصير طازج بارد</div>
-        <div class="item-footer">
-          <div class="item-price">400 ر</div>
-          <button class="add-btn" onclick="addToCart(this,'عصير ليمون',400)">+</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="item-card">
-      <div class="item-img">☕</div>
-      <div class="item-info">
-        <div class="item-name">شاي كرك</div>
-        <div class="item-desc">شاي بالحليب والهيل</div>
-        <div class="item-footer">
-          <div class="item-price">300 ر</div>
-          <button class="add-btn" onclick="addToCart(this,'شاي كرك',300)">+</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
+<div class="cats" id="cats-container"></div>
+<div id="sections-container"></div>
 <div class="spacer"></div>
-
-<div class="cart-bar" id="cart-bar" onclick="showToast('فتح سلة الطلبات...')">
-  <div class="cart-info">
-    <div class="cart-count" id="cart-count">0</div>
-    <div class="cart-text">عرض السلة</div>
-  </div>
-  <div class="cart-price" id="cart-price">0 ر</div>
+<div class="cart-bar" id="cart-bar" onclick="goToCart()">
+<div class="cart-info">
+<div class="cart-count" id="cart-count">0</div>
+<div class="cart-text">عرض السلة</div>
 </div>
-
+<div class="cart-price" id="cart-price">0 ر</div>
+</div>
 <div id="toast"></div>
-
 <script>
-let cartCount=0,cartTotal=0;
-let isFav=false;
-
-function selectCat(el){
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
+const storeData={
+restaurant:{name:'مطعم الأصيل',emoji:'🍖',heroColor:'linear-gradient(135deg,#1a2a1a,#2a3a2a)',tags:['🍖 مشويات','🍚 أرز','🥩 لحوم','🥤 مشروبات','🍰 حلويات'],searchPlaceholder:'ابحث في قائمة المطعم...',categories:['الكل','🍗 دجاج','🥩 لحوم','🍚 أرز','🥤 مشروبات','🍰 حلويات'],sections:[{title:'الأكثر طلباً 🔥',items:[{emoji:'🍗',name:'دجاج مشوي كامل',desc:'دجاج طازج مشوي على الفحم مع البهارات اليمنية',price:2500,badge:'badge-popular',badgeText:'🔥 الأكثر طلباً'},{emoji:'🍖',name:'كبسة لحم',desc:'أرز بسمتي مع لحم الضأن والتوابل اليمنية الأصيلة',price:4500,badge:'badge-popular',badgeText:'⭐ الأعلى تقييماً'},{emoji:'🍚',name:'مندي دجاج',desc:'دجاج مطبوخ على البخار مع الأرز والمرق الشهي',price:3500,badge:'badge-new',badgeText:'✨ جديد'},{emoji:'🥩',name:'هريس لحم',desc:'هريس يمني أصيل بالسمن البلدي',price:2000,badge:'',badgeText:''}]},{title:'وجبات فردية 🍽️',items:[{emoji:'🍗',name:'ربع دجاج مشوي',desc:'مع خبز وصلصة',price:1200,badge:'',badgeText:''},{emoji:'🥚',name:'بيض مقلي بالتوست',desc:'إفطار خفيف سريع',price:600,badge:'',badgeText:''},{emoji:'🫔',name:'شاورما دجاج',desc:'شاورما بالخبز العربي والصلصة',price:800,badge:'badge-popular',badgeText:'🔥 مشهور'}]},{title:'مشروبات 🥤',items:[{emoji:'🧃',name:'عصير ليمون بالنعناع',desc:'عصير طازج بارد',price:400,badge:'',badgeText:''},{emoji:'☕',name:'شاي كرك',desc:'شاي بالحليب والهيل',price:300,badge:'',badgeText:''},{emoji:'🥛',name:'لبن رائب',desc:'لبن طازج يومي',price:350,badge:'',badgeText:''}]},{title:'حلويات 🍰',items:[{emoji:'🍮',name:'كريم كراميل',desc:'حلى خفيف لذيذ',price:500,badge:'badge-new',badgeText:'✨ جديد'},{emoji:'🍯',name:'بسبوسة بالعسل',desc:'بسبوسة بالسمن والعسل اليمني',price:600,badge:'',badgeText:''}]}]},
+pharmacy:{name:'صيدلية الشفاء',emoji:'💊',heroColor:'linear-gradient(135deg,#0a1a2a,#0a2a1a)',tags:['💊 أدوية','🩺 مستلزمات','🧴 عناية','💉 فيتامينات','🌿 أعشاب'],searchPlaceholder:'ابحث عن دواء أو منتج...',categories:['الكل','💊 أدوية','🧴 عناية','💉 فيتامينات','🌿 أعشاب','🩺 مستلزمات'],sections:[{title:'أدوية شائعة 💊',items:[{emoji:'💊',name:'باراسيتامول 500mg',desc:'مسكن للألم وخافض للحرارة — 20 قرص',price:300,badge:'badge-popular',badgeText:'🔥 الأكثر طلباً'},{emoji:'🤧',name:'أدوية البرد والإنفلونزا',desc:'كولدكس أو ما يعادله',price:800,badge:'',badgeText:''},{emoji:'💉',name:'فيتامين C 1000mg',desc:'لتقوية المناعة — 30 قرص',price:900,badge:'badge-new',badgeText:'✨ جديد'},{emoji:'🩹',name:'مضاد حيوي أموكسيسيلين',desc:'يصرف بوصفة طبية فقط',price:1200,badge:'badge-hot',badgeText:'⚠️ يحتاج وصفة'}]},{title:'عناية بالجلد 🧴',items:[{emoji:'🧴',name:'كريم مرطب للبشرة',desc:'للبشرة الجافة والحساسة',price:1500,badge:'',badgeText:''},{emoji:'☀️',name:'واقي شمس SPF50',desc:'حماية كاملة من أشعة الشمس',price:2000,badge:'badge-popular',badgeText:'⭐ الأعلى مبيعاً'},{emoji:'🫧',name:'غسول طبي للوجه',desc:'للبشرة الدهنية',price:1200,badge:'',badgeText:''}]},{title:'فيتامينات ومكملات 💉',items:[{emoji:'🟡',name:'فيتامين D3',desc:'لصحة العظام والمناعة',price:1800,badge:'',badgeText:''},{emoji:'🔴',name:'حديد + حمض فوليك',desc:'لعلاج الأنيميا',price:700,badge:'badge-popular',badgeText:'🔥 مطلوب'},{emoji:'🟠',name:'أوميغا 3',desc:'لصحة القلب والمخ',price:2200,badge:'badge-new',badgeText:'✨ جديد'}]},{title:'مستلزمات طبية 🩺',items:[{emoji:'🌡️',name:'ميزان حرارة رقمي',desc:'دقيق وسريع القراءة',price:3000,badge:'',badgeText:''},{emoji:'🩹',name:'شاش طبي وبلاستر',desc:'للإسعافات الأولية',price:400,badge:'',badgeText:''},{emoji:'😷',name:'كمامات طبية',desc:'علبة 50 كمامة',price:600,badge:'',badgeText:''}]},{title:'أعشاب طبيعية 🌿',items:[{emoji:'🍯',name:'عسل سدر يمني',desc:'100% طبيعي علاجي',price:5000,badge:'badge-organic',badgeText:'🌿 طبيعي'},{emoji:'🌿',name:'حبة البركة',desc:'زيت الحبة السوداء الطبيعي',price:1500,badge:'badge-organic',badgeText:'🌿 طبيعي'}]}]},
+grocery:{name:'بقالة النور',emoji:'🛒',heroColor:'linear-gradient(135deg,#1a1a2a,#2a1a1a)',tags:['🛒 مواد غذائية','🥫 معلبات','🧹 منظفات','🥛 ألبان','🍞 مخبوزات'],searchPlaceholder:'ابحث عن منتج...',categories:['الكل','🥛 ألبان وبيض','🥫 معلبات','🍞 مخبوزات','🧹 منظفات','☕ مشروبات'],sections:[{title:'ألبان وبيض 🥛',items:[{emoji:'🥛',name:'حليب طازج 1 لتر',desc:'حليب كامل الدسم طازج يومي',price:600,badge:'badge-popular',badgeText:'🔥 الأكثر طلباً'},{emoji:'🥚',name:'بيض بلدي طازج',desc:'كرتونة 30 بيضة',price:2500,badge:'badge-organic',badgeText:'🌿 بلدي'},{emoji:'🧀',name:'جبنة بيضاء',desc:'جبنة طازجة 500 غرام',price:1200,badge:'',badgeText:''},{emoji:'🍦',name:'زبادي طبيعي',desc:'كوب زبادي 200 غرام',price:300,badge:'',badgeText:''}]},{title:'معلبات وجاهز 🥫',items:[{emoji:'🥫',name:'تونة معلبة',desc:'تونة بالزيت 185 غرام',price:500,badge:'badge-offer',badgeText:'💜 عرض'},{emoji:'🍅',name:'معجون طماطم',desc:'علبة 400 غرام',price:350,badge:'',badgeText:''},{emoji:'🫘',name:'فول معلب',desc:'فول مدمس جاهز',price:400,badge:'badge-popular',badgeText:'🔥 مطلوب'},{emoji:'🥜',name:'فاصوليا بيضاء',desc:'معلبة 400 غرام',price:380,badge:'',badgeText:''}]},{title:'مخبوزات 🍞',items:[{emoji:'🍞',name:'خبز تميس طازج',desc:'رغيف يمني طازج',price:200,badge:'badge-popular',badgeText:'🔥 يومي'},{emoji:'🥖',name:'خبز فرنسي',desc:'باكيت طازج',price:300,badge:'',badgeText:''},{emoji:'🍪',name:'بسكويت شاي',desc:'علبة 400 غرام',price:700,badge:'',badgeText:''}]},{title:'مشروبات ☕',items:[{emoji:'☕',name:'شاي أحمر',desc:'علبة شاي 100 كيس',price:1200,badge:'badge-popular',badgeText:'🔥 الأكثر طلباً'},{emoji:'🫖',name:'قهوة يمنية',desc:'قهوة يمنية 250 غرام',price:1500,badge:'badge-organic',badgeText:'🌿 يمني'},{emoji:'🧃',name:'عصير مانجو جاهز',desc:'عبوة 1 لتر',price:800,badge:'',badgeText:''}]},{title:'منظفات 🧹',items:[{emoji:'🧹',name:'مسحوق غسيل',desc:'تايد أو أريال 1 كيلو',price:1500,badge:'badge-offer',badgeText:'💜 عرض'},{emoji:'🧴',name:'سائل جلي صحون',desc:'فيري 750 مل',price:800,badge:'',badgeText:''},{emoji:'🚿',name:'صابون استحمام',desc:'دوف أو لوكس — 3 قطع',price:900,badge:'',badgeText:''}]}]},
+vegetables:{name:'خضار الطازج',emoji:'🥦',heroColor:'linear-gradient(135deg,#0a2a0a,#1a3a0a)',tags:['🥦 خضار','🍅 طماطم','🍋 فواكه','🌿 أعشاب','🥕 جذور'],searchPlaceholder:'ابحث عن خضار أو فاكهة...',categories:['الكل','🥦 خضار','🍎 فواكه','🌿 أعشاب','🥕 جذور','🌶️ توابل'],sections:[{title:'خضار طازجة 🥦',items:[{emoji:'🍅',name:'طماطم طازجة',desc:'كيلو طماطم حمراء طازجة',price:300,badge:'badge-popular',badgeText:'🔥 يومي'},{emoji:'🥦',name:'بروكلي طازج',desc:'رأس بروكلي كامل',price:800,badge:'badge-organic',badgeText:'🌿 طازج'},{emoji:'🥒',name:'خيار طازج',desc:'كيلو خيار محلي',price:400,badge:'',badgeText:''},{emoji:'🫑',name:'فلفل ألوان',desc:'كيلو فلفل أحمر وأخضر',price:600,badge:'badge-new',badgeText:'✨ موسمي'},{emoji:'🧅',name:'بصل أبيض',desc:'كيلو بصل طازج',price:350,badge:'badge-popular',badgeText:'🔥 مطلوب'},{emoji:'🧄',name:'ثوم محلي',desc:'250 غرام ثوم بلدي',price:400,badge:'badge-organic',badgeText:'🌿 بلدي'}]},{title:'فواكه طازجة 🍎',items:[{emoji:'🍌',name:'موز طازج',desc:'كيلو موز ناضج',price:500,badge:'badge-popular',badgeText:'🔥 الأكثر طلباً'},{emoji:'🍎',name:'تفاح أحمر',desc:'كيلو تفاح مستورد',price:1200,badge:'',badgeText:''},{emoji:'🍋',name:'ليمون طازج',desc:'كيلو ليمون أصفر',price:600,badge:'badge-organic',badgeText:'🌿 محلي'},{emoji:'🍇',name:'عنب أخضر',desc:'كيلو عنب طازج',price:1500,badge:'badge-new',badgeText:'✨ موسمي'},{emoji:'🥭',name:'مانجو يمني',desc:'كيلو مانجو محلية',price:800,badge:'badge-popular',badgeText:'🔥 يمني'}]},{title:'أعشاب وتوابل 🌿',items:[{emoji:'🌿',name:'نعناع طازج',desc:'حزمة نعناع طازجة',price:200,badge:'',badgeText:''},{emoji:'🌱',name:'كزبرة طازجة',desc:'حزمة كزبرة خضراء',price:150,badge:'',badgeText:''},{emoji:'🌶️',name:'فلفل حار',desc:'250 غرام فلفل حار محلي',price:300,badge:'badge-hot',badgeText:'🌶️ حار'}]},{title:'جذور وبطاطس 🥕',items:[{emoji:'🥕',name:'جزر طازج',desc:'كيلو جزر محلي',price:350,badge:'',badgeText:''},{emoji:'🥔',name:'بطاطس',desc:'كيلو بطاطس طازجة',price:400,badge:'badge-popular',badgeText:'🔥 مطلوب'},{emoji:'🫚',name:'بطاطا حلوة',desc:'كيلو بطاطا حلوة',price:500,badge:'badge-organic',badgeText:'🌿 محلي'}]}]},
+sweets:{name:'حلويات الأمل',emoji:'🍰',heroColor:'linear-gradient(135deg,#2a1a1a,#3a1a2a)',tags:['🍰 كيك','🍫 شوكولاتة','🍮 حلى','🧁 كب كيك','🍯 عسل'],searchPlaceholder:'ابحث عن حلوى...',categories:['الكل','🍰 كيك','🍫 شوكولاتة','🍮 حلى يمني','🧁 كب كيك','🍯 عسل'],sections:[{title:'الأكثر طلباً 🔥',items:[{emoji:'🍰',name:'كيك شوكولاتة',desc:'كيك طازج بكريمة الشوكولاتة الغنية',price:3500,badge:'badge-popular',badgeText:'🔥 الأكثر طلباً'},{emoji:'🧁',name:'كب كيك مزيج',desc:'6 كب كيك بنكهات متنوعة',price:2000,badge:'badge-popular',badgeText:'⭐ الأعلى تقييماً'},{emoji:'🍮',name:'كريم كراميل',desc:'حلى الكريم كراميل الناعم',price:800,badge:'badge-new',badgeText:'✨ جديد'}]},{title:'حلويات يمنية 🍯',items:[{emoji:'🍯',name:'بسبوسة بالعسل',desc:'بسبوسة يمنية بالعسل والسمن البلدي',price:1200,badge:'badge-organic',badgeText:'🌿 يمني'},{emoji:'🟤',name:'زلابية',desc:'زلابية مقلية بالعسل',price:600,badge:'badge-popular',badgeText:'🔥 تراثي'},{emoji:'🍡',name:'لقيمات',desc:'لقيمات بالعسل والسمسم',price:700,badge:'',badgeText:''},{emoji:'🧆',name:'كنافة نابلسية',desc:'كنافة بالجبنة الطازجة',price:2500,badge:'badge-hot',badgeText:'🔥 مطلوب'}]},{title:'شوكولاتة 🍫',items:[{emoji:'🍫',name:'براونيز شوكولاتة',desc:'براونيز طازج محشو بالجوز',price:1500,badge:'badge-new',badgeText:'✨ جديد'},{emoji:'🍬',name:'تروفل شوكولاتة',desc:'علبة 12 حبة تروفل',price:3000,badge:'badge-offer',badgeText:'💜 هدية مميزة'}]}]},
+meat:{name:'لحوم الأمين',emoji:'🥩',heroColor:'linear-gradient(135deg,#2a0a0a,#3a1a0a)',tags:['🥩 لحوم','🍗 دواجن','🐑 ضأن','🐄 بقري','🐟 أسماك'],searchPlaceholder:'ابحث عن نوع اللحم...',categories:['الكل','🐑 ضأن','🐄 بقري','🍗 دواجن','🐟 أسماك','🫀 أحشاء'],sections:[{title:'لحم ضأن 🐑',items:[{emoji:'🥩',name:'لحم ضأن طازج',desc:'كيلو لحم ضأن محلي طازج',price:6000,badge:'badge-popular',badgeText:'🔥 الأكثر طلباً'},{emoji:'🦴',name:'عظم ضأن للمرق',desc:'كيلو عظم طازج',price:2000,badge:'',badgeText:''},{emoji:'🫀',name:'كبد ضأن',desc:'500 غرام كبد طازج',price:2500,badge:'badge-organic',badgeText:'🌿 بلدي'}]},{title:'لحم بقري 🐄',items:[{emoji:'🥩',name:'لحم بقري مفروم',desc:'كيلو لحم مفروم طازج',price:5000,badge:'badge-popular',badgeText:'🔥 مطلوب'},{emoji:'🥩',name:'شرائح بقري',desc:'كيلو شرائح للشوي',price:5500,badge:'',badgeText:''},{emoji:'🦴',name:'ضلوع بقري',desc:'كيلو ضلوع طازجة',price:4500,badge:'badge-new',badgeText:'✨ طازج اليوم'}]},{title:'دواجن 🍗',items:[{emoji:'🍗',name:'دجاج كامل طازج',desc:'دجاجة كاملة 1.2 كيلو',price:3500,badge:'badge-popular',badgeText:'🔥 الأكثر طلباً'},{emoji:'🍗',name:'صدور دجاج',desc:'كيلو صدور طازجة',price:3000,badge:'badge-organic',badgeText:'🌿 بلدي'},{emoji:'🍗',name:'أفخاذ دجاج',desc:'كيلو أفخاذ طازجة',price:2800,badge:'',badgeText:''}]},{title:'أسماك 🐟',items:[{emoji:'🐟',name:'سمك هامور طازج',desc:'كيلو هامور من بحر عدن',price:8000,badge:'badge-popular',badgeText:'🔥 طازج'},{emoji:'🦐',name:'روبيان طازج',desc:'500 غرام روبيان كبير',price:5000,badge:'badge-new',badgeText:'✨ اليوم'},{emoji:'🐡',name:'سمك زبيدي',desc:'كيلو زبيدي طازج',price:9000,badge:'badge-organic',badgeText:'🌿 بحري'}]}]}
+};
+let cartCount=0,cartTotal=0,isFav=false,currentType='restaurant';
+function getStoreType(){const p=new URLSearchParams(window.location.search);return p.get('type')||'restaurant';}
+function buildPage(){
+currentType=getStoreType();
+const data=storeData[currentType]||storeData['restaurant'];
+document.title='وصّل - '+data.name;
+document.getElementById('hero').style.background=data.heroColor;
+document.getElementById('hero-emoji').textContent=data.emoji;
+document.getElementById('store-name').textContent=data.name;
+document.getElementById('store-tags').innerHTML=data.tags.map(t=>`<span class="store-tag">${t}</span>`).join('');
+document.getElementById('search-input').placeholder=data.searchPlaceholder;
+document.getElementById('cats-container').innerHTML=data.categories.map((c,i)=>`<button class="cat-btn ${i===0?'active':''}" onclick="selectCat(this)">${c}</button>`).join('');
+buildSections(data.sections);
 }
-
+function buildSections(sections){
+document.getElementById('sections-container').innerHTML=sections.map(s=>`
+<div class="section" style="margin-top:20px;">
+<div class="section-title">${s.title}</div>
+<div class="items-grid">
+${s.items.map(item=>`
+<div class="item-card">
+<div class="item-img">${item.emoji}</div>
+<div class="item-info">
+<div class="item-name">${item.name}</div>
+<div class="item-desc">${item.desc}</div>
+${item.badge?`<span class="item-badge ${item.badge}">${item.badgeText}</span>`:''}
+<div class="item-footer">
+<div class="item-price">${item.price.toLocaleString()} ر</div>
+<button class="add-btn" onclick="addToCart(this,'${item.name}',${item.price})">+</button>
+</div>
+</div>
+</div>`).join('')}
+</div>
+</div>`).join('');
+}
+function selectCat(el){document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function filterItems(){
+const q=document.getElementById('search-input').value.trim();
+if(!q){buildSections(storeData[currentType].sections);return;}
+const filtered=storeData[currentType].sections.map(s=>({...s,items:s.items.filter(i=>i.name.includes(q)||i.desc.includes(q))})).filter(s=>s.items.length>0);
+if(filtered.length){buildSections(filtered);}
+else{document.getElementById('sections-container').innerHTML='<div style="text-align:center;padding:40px;color:#555;">لم يتم العثور على نتائج 🔍</div>';}
+}
 function addToCart(btn,name,price){
-  cartCount++;
-  cartTotal+=price;
-  btn.textContent='✓';
-  btn.classList.add('added');
-  setTimeout(()=>{btn.textContent='+';btn.classList.remove('added')},1000);
-  document.getElementById('cart-count').textContent=cartCount;
-  document.getElementById('cart-price').textContent=cartTotal.toLocaleString()+' ر';
-  document.getElementById('cart-bar').classList.add('show');
-  showToast('✅ تمت الإضافة للسلة');
+cartCount++;cartTotal+=price;
+btn.textContent='✓';btn.classList.add('added');
+setTimeout(()=>{btn.textContent='+';btn.classList.remove('added');},1000);
+document.getElementById('cart-count').textContent=cartCount;
+document.getElementById('cart-price').textContent=cartTotal.toLocaleString()+' ر';
+document.getElementById('cart-bar').classList.add('show');
+showToast('✅ تمت الإضافة للسلة');
 }
-
-function toggleFav(){
-  isFav=!isFav;
-  document.getElementById('fav-btn').textContent=isFav?'❤️':'🤍';
-  showToast(isFav?'❤️ تمت الإضافة للمفضلة':'تمت الإزالة من المفضلة');
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
+function goToCart(){showToast('فتح سلة الطلبات...');setTimeout(()=>window.location.href='cart.html',800);}
+function toggleFav(){isFav=!isFav;document.getElementById('fav-btn').textContent=isFav?'❤️':'🤍';showToast(isFav?'❤️ تمت الإضافة للمفضلة':'تمت الإزالة من المفضلة');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+buildPage();
 </script>
 </body>
 </html>
