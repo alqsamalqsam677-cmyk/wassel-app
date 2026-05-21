@@ -40,13 +40,16 @@ body{font-family:'Cairo',sans-serif;background:var(--black);color:var(--text)}
 .emergency h3{font-size:16px;font-weight:700;color:#fc8181}
 .emergency p{font-size:12px;color:var(--muted);margin-top:4px}
 .stores{display:flex;flex-direction:column;gap:14px}
-.store-card{background:var(--card);border-radius:18px;overflow:hidden;border:1px solid #2a2a2a;cursor:pointer;transition:all 0.2s}
+.store-card{background:var(--card);border-radius:18px;overflow:hidden;border:1px solid #2a2a2a;cursor:pointer;transition:all 0.3s}
 .store-card:hover{border-color:var(--green)}
+.store-card.hidden{display:none}
 .store-img{width:100%;height:130px;display:flex;align-items:center;justify-content:center;font-size:50px;position:relative}
 .store-img.food{background:linear-gradient(135deg,#1a2a1a,#2a3a2a)}
-.store-img.pharma{background:linear-gradient(135deg,#1a1a2a,#2a2a3a)}
-.store-img.grocery{background:linear-gradient(135deg,#2a1a1a,#3a2a2a)}
-.store-img.bakery{background:linear-gradient(135deg,#2a2a1a,#3a3a2a)}
+.store-img.pharma{background:linear-gradient(135deg,#0a1a2a,#0a2a1a)}
+.store-img.grocery{background:linear-gradient(135deg,#1a1a2a,#2a1a1a)}
+.store-img.veggies{background:linear-gradient(135deg,#0a2a0a,#1a3a0a)}
+.store-img.meat{background:linear-gradient(135deg,#2a0a0a,#3a1a0a)}
+.store-img.sweets{background:linear-gradient(135deg,#2a1a1a,#3a1a2a)}
 .store-badge{position:absolute;top:10px;right:10px;background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
 .store-badge.urgent{background:#e53e3e}
 .store-info{padding:14px}
@@ -71,7 +74,7 @@ body{font-family:'Cairo',sans-serif;background:var(--black);color:var(--text)}
 <div class="search-wrap">
 <div class="search-box">
 <span>🔍</span>
-<input type="text" placeholder="ابحث عن محل أو منتج...">
+<input type="text" placeholder="ابحث عن محل أو منتج..." oninput="searchStores(this.value)">
 </div>
 </div>
 <div class="hero">
@@ -87,38 +90,53 @@ body{font-family:'Cairo',sans-serif;background:var(--black);color:var(--text)}
 <div class="section">
 <div class="section-title">التصنيفات</div>
 <div class="cats">
-<div class="cat active" onclick="selectCat(this)"><div class="cat-icon">🍔</div><span>مطاعم</span></div>
-<div class="cat" onclick="selectCat(this)"><div class="cat-icon">💊</div><span>صيدليات</span></div>
-<div class="cat" onclick="selectCat(this)"><div class="cat-icon">🛒</div><span>بقالة</span></div>
-<div class="cat" onclick="selectCat(this)"><div class="cat-icon">🥦</div><span>خضار</span></div>
-<div class="cat" onclick="selectCat(this)"><div class="cat-icon">🥩</div><span>لحوم</span></div>
-<div class="cat" onclick="selectCat(this)"><div class="cat-icon">🍯</div><span>عسل</span></div>
-<div class="cat" onclick="selectCat(this)"><div class="cat-icon">📦</div><span>متنوع</span></div>
+<div class="cat active" onclick="filterCat(this,'all')"><div class="cat-icon">🏪</div><span>الكل</span></div>
+<div class="cat" onclick="filterCat(this,'restaurant')"><div class="cat-icon">🍔</div><span>مطاعم</span></div>
+<div class="cat" onclick="filterCat(this,'pharmacy')"><div class="cat-icon">💊</div><span>صيدليات</span></div>
+<div class="cat" onclick="filterCat(this,'grocery')"><div class="cat-icon">🛒</div><span>بقالة</span></div>
+<div class="cat" onclick="filterCat(this,'vegetables')"><div class="cat-icon">🥦</div><span>خضار</span></div>
+<div class="cat" onclick="filterCat(this,'meat')"><div class="cat-icon">🥩</div><span>لحوم</span></div>
+<div class="cat" onclick="filterCat(this,'sweets')"><div class="cat-icon">🍰</div><span>حلويات</span></div>
 </div>
 </div>
 <div class="section" style="margin-top:20px;padding:0 20px;">
-<div class="emergency" onclick="showToast('جاري الاتصال بأقرب صيدلية 🚨')">
+<div class="emergency" onclick="window.location.href='store.html?type=pharmacy'">
 <span style="font-size:40px">🚨</span>
 <div><h3>توصيل طوارئ</h3><p>أدوية عاجلة في أسرع وقت</p></div>
 </div>
 </div>
 <div class="section">
 <div class="section-title">قريب منك <a href="#">عرض الكل</a></div>
-<div class="stores">
-<div class="store-card" onclick="window.location.href='store.html'">
+<div class="stores" id="stores-list">
+<div class="store-card" data-type="restaurant" data-name="مطعم الأصيل" onclick="window.location.href='store.html?type=restaurant'">
 <div class="store-img food">🍖<div class="store-badge">مفتوح</div></div>
 <div class="store-info"><div class="store-name">مطعم الأصيل</div>
-<div class="store-meta"><span class="rating">⭐ 4.9</span><span>20-30 دقيقة</span><span>200 ريال</span></div></div>
+<div class="store-meta"><span class="rating">⭐ 4.9</span><span>20-30 دقيقة</span><span>200 ريال توصيل</span></div></div>
 </div>
-<div class="store-card" onclick="window.location.href='store.html'">
+<div class="store-card" data-type="pharmacy" data-name="صيدلية الشفاء" onclick="window.location.href='store.html?type=pharmacy'">
 <div class="store-img pharma">💊<div class="store-badge urgent">طوارئ 24/7</div></div>
 <div class="store-info"><div class="store-name">صيدلية الشفاء</div>
-<div class="store-meta"><span class="rating">⭐ 4.8</span><span>15-25 دقيقة</span><span>150 ريال</span></div></div>
+<div class="store-meta"><span class="rating">⭐ 4.8</span><span>15-25 دقيقة</span><span>150 ريال توصيل</span></div></div>
 </div>
-<div class="store-card" onclick="window.location.href='store.html'">
+<div class="store-card" data-type="grocery" data-name="بقالة النور" onclick="window.location.href='store.html?type=grocery'">
 <div class="store-img grocery">🛒<div class="store-badge">الأكثر طلباً</div></div>
 <div class="store-info"><div class="store-name">بقالة النور</div>
-<div class="store-meta"><span class="rating">⭐ 4.7</span><span>25-35 دقيقة</span><span>100 ريال</span></div></div>
+<div class="store-meta"><span class="rating">⭐ 4.7</span><span>25-35 دقيقة</span><span>100 ريال توصيل</span></div></div>
+</div>
+<div class="store-card" data-type="vegetables" data-name="خضار الطازج" onclick="window.location.href='store.html?type=vegetables'">
+<div class="store-img veggies">🥦<div class="store-badge">طازج يومي</div></div>
+<div class="store-info"><div class="store-name">خضار الطازج</div>
+<div class="store-meta"><span class="rating">⭐ 4.6</span><span>20-30 دقيقة</span><span>150 ريال توصيل</span></div></div>
+</div>
+<div class="store-card" data-type="meat" data-name="لحوم الأمين" onclick="window.location.href='store.html?type=meat'">
+<div class="store-img meat">🥩<div class="store-badge">مفتوح</div></div>
+<div class="store-info"><div class="store-name">لحوم الأمين</div>
+<div class="store-meta"><span class="rating">⭐ 4.8</span><span>20-35 دقيقة</span><span>200 ريال توصيل</span></div></div>
+</div>
+<div class="store-card" data-type="sweets" data-name="حلويات الأمل" onclick="window.location.href='store.html?type=sweets'">
+<div class="store-img sweets">🍰<div class="store-badge">جديد</div></div>
+<div class="store-info"><div class="store-name">حلويات الأمل</div>
+<div class="store-meta"><span class="rating">⭐ 4.9</span><span>25-35 دقيقة</span><span>150 ريال توصيل</span></div></div>
 </div>
 </div>
 </div>
@@ -132,7 +150,21 @@ body{font-family:'Cairo',sans-serif;background:var(--black);color:var(--text)}
 </div>
 <div id="toast"></div>
 <script>
-function selectCat(el){document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'));el.classList.add('active')}
+function filterCat(el,type){
+document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'));
+el.classList.add('active');
+document.querySelectorAll('.store-card').forEach(card=>{
+if(type==='all'||card.dataset.type===type){card.classList.remove('hidden');}
+else{card.classList.add('hidden');}
+});
+}
+function searchStores(q){
+const query=q.trim();
+document.querySelectorAll('.store-card').forEach(card=>{
+if(!query||card.dataset.name.includes(query)){card.classList.remove('hidden');}
+else{card.classList.add('hidden');}
+});
+}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
 </script>
 </body>
