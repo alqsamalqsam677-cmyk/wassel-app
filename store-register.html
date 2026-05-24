@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وصّل - تسجيل محل تجاري</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;background:#0a0a0a;color:#f0f0f0;min-height:100vh}
+.topbar{background:#111;padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #1e1e1e;position:sticky;top:0;z-index:100}
+.back{width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:none;color:#f0f0f0;font-size:18px;cursor:pointer}
+.topbar h2{font-size:18px;font-weight:700}
+.hero{margin:20px;background:linear-gradient(135deg,#1a2a1a,#0a1a0a);border-radius:20px;padding:24px 20px;border:1px solid #2a3a2a;text-align:center}
+.hero-icon{font-size:56px;margin-bottom:12px}
+.hero h3{font-size:20px;font-weight:900;color:#1DB954}
+.hero p{font-size:13px;color:#888;margin-top:6px;line-height:1.6}
+.benefits{display:flex;gap:10px;margin:0 20px 20px;flex-wrap:wrap}
+.benefit{flex:1;min-width:140px;background:#1a1a1a;border-radius:14px;padding:14px;border:1px solid #2a2a2a;text-align:center}
+.benefit .b-icon{font-size:24px;margin-bottom:6px}
+.benefit .b-text{font-size:12px;color:#888;line-height:1.4}
+.benefit .b-val{font-size:14px;font-weight:700;color:#1DB954;margin-bottom:4px}
+.content{padding:0 20px 20px}
+.form-section{background:#1a1a1a;border-radius:18px;padding:18px;border:1px solid #2a2a2a;margin-bottom:16px}
+.form-section h3{font-size:15px;font-weight:700;margin-bottom:16px;color:#1DB954;display:flex;align-items:center;gap:8px}
+.input-group{margin-bottom:14px}
+.input-group label{font-size:13px;color:#888;margin-bottom:6px;display:block}
+.input-group input,.input-group select,.input-group textarea{width:100%;padding:13px 16px;background:#111;border:1px solid #2a2a2a;border-radius:12px;color:#f0f0f0;font-family:'Cairo',sans-serif;font-size:14px;outline:none;transition:border 0.2s}
+.input-group input:focus,.input-group select:focus,.input-group textarea:focus{border-color:#1DB954}
+.input-group textarea{resize:none;height:80px}
+.input-group select option{background:#111}
+.store-types{display:flex;gap:8px;flex-wrap:wrap}
+.stype-btn{padding:10px 14px;background:#111;border:1px solid #2a2a2a;border-radius:10px;color:#888;font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.stype-btn.active{border-color:#1DB954;color:#1DB954;background:rgba(29,185,84,0.1)}
+.cities{display:flex;gap:8px;flex-wrap:wrap}
+.city-btn{padding:10px 16px;background:#111;border:1px solid #2a2a2a;border-radius:10px;color:#888;font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.city-btn.active{border-color:#1DB954;color:#1DB954;background:rgba(29,185,84,0.1)}
+.hours-row{display:flex;gap:10px}
+.hours-row .input-group{flex:1}
+.commission-box{background:#111;border-radius:14px;padding:16px;border:1px solid #1DB95433;margin-bottom:14px}
+.commission-box .c-title{font-size:13px;color:#888;margin-bottom:10px}
+.commission-box .c-val{font-size:28px;font-weight:900;color:#1DB954;text-align:center}
+.commission-box .c-desc{font-size:12px;color:#666;text-align:center;margin-top:6px;line-height:1.5}
+.agree-box{display:flex;align-items:flex-start;gap:12px;padding:16px;background:#1a1a1a;border-radius:14px;border:1px solid #2a2a2a;margin-bottom:16px;cursor:pointer}
+.agree-check{width:24px;height:24px;border-radius:6px;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:all 0.2s;margin-top:2px}
+.agree-check.checked{background:#1DB954;border-color:#1DB954;color:#fff}
+.agree-text{font-size:12px;color:#888;line-height:1.6}
+.agree-text span{color:#1DB954}
+.submit-btn{width:100%;padding:16px;background:#1DB954;color:#fff;border:none;border-radius:14px;font-family:'Cairo',sans-serif;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(29,185,84,0.3);transition:all 0.2s}
+.submit-btn:active{transform:scale(0.98)}
+.login-link{text-align:center;margin-top:16px;font-size:13px;color:#888}
+.login-link a{color:#1DB954;font-weight:600;text-decoration:none}
+.spacer{height:30px}
+#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1DB954;color:#fff;padding:12px 24px;border-radius:30px;font-weight:600;font-size:14px;opacity:0;transition:all 0.3s;z-index:500;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="topbar">
+<button class="back" onclick="window.location.href='index.html'">←</button>
+<h2>تسجيل محل تجاري</h2>
+</div>
+<div class="hero">
+<div class="hero-icon">🏪</div>
+<h3>سجّل محلك في وصّل</h3>
+<p>وصّل زبائنك إليك بدون أي تعب —<br>التوصيل علينا وأنت تركّز على عملك</p>
+</div>
+<div class="benefits">
+<div class="benefit"><div class="b-icon">💰</div><div class="b-val">10% فقط</div><div class="b-text">عمولة من كل طلب مكتمل</div></div>
+<div class="benefit"><div class="b-icon">🚫</div><div class="b-val">بدون اشتراك</div><div class="b-text">لا تدفع شيء إذا ما جاك طلب</div></div>
+<div class="benefit"><div class="b-icon">🛵</div><div class="b-val">سائقون جاهزون</div><div class="b-text">في عدن والضالع على مدار اليوم</div></div>
+<div class="benefit"><div class="b-icon">📱</div><div class="b-val">إدارة سهلة</div><div class="b-text">تابع طلباتك من جوالك مباشرة</div></div>
+</div>
+<div class="content">
+<div class="form-section">
+<h3>🏪 معلومات المحل</h3>
+<div class="input-group"><label>اسم المحل أو المطعم</label><input type="text" id="store-name" placeholder="مثال: مطعم الأصيل"></div>
+<div class="input-group"><label>نوع المحل</label>
+<div class="store-types">
+<button class="stype-btn active" onclick="selectType(this)">🍖 مطعم</button>
+<button class="stype-btn" onclick="selectType(this)">💊 صيدلية</button>
+<button class="stype-btn" onclick="selectType(this)">🛒 بقالة</button>
+<button class="stype-btn" onclick="selectType(this)">🥦 خضار</button>
+<button class="stype-btn" onclick="selectType(this)">🥩 لحوم</button>
+<button class="stype-btn" onclick="selectType(this)">🍰 حلويات</button>
+<button class="stype-btn" onclick="selectType(this)">🍯 عسل</button>
+<button class="stype-btn" onclick="selectType(this)">📦 متنوع</button>
+</div>
+</div>
+<div class="input-group"><label>المدينة</label>
+<div class="cities">
+<button class="city-btn active" onclick="selectCity(this)">📍 عدن</button>
+<button class="city-btn" onclick="selectCity(this)">📍 الضالع</button>
+</div>
+</div>
+<div class="input-group"><label>عنوان المحل (الحي والشارع)</label><input type="text" id="store-address" placeholder="مثال: حي المعلا، شارع الميناء"></div>
+<div class="input-group"><label>وصف المحل ومنتجاتك</label><textarea id="store-desc" placeholder="اكتب وصفاً مختصراً لمحلك ومنتجاتك..."></textarea></div>
+<div class="hours-row">
+<div class="input-group"><label>وقت الفتح</label><input type="text" placeholder="مثال: 8 صباحاً"></div>
+<div class="input-group"><label>وقت الإغلاق</label><input type="text" placeholder="مثال: 11 مساءً"></div>
+</div>
+</div>
+<div class="form-section">
+<h3>👤 معلومات صاحب المحل</h3>
+<div class="input-group"><label>الاسم الكامل</label><input type="text" id="owner-name" placeholder="اسمك الكامل"></div>
+<div class="input-group"><label>رقم الهاتف</label><input type="tel" id="owner-phone" placeholder="7xxxxxxxx"></div>
+<div class="input-group"><label>رقم هاتف بديل (اختياري)</label><input type="tel" placeholder="7xxxxxxxx"></div>
+<div class="input-group"><label>كلمة المرور</label><input type="password" id="owner-pass" placeholder="••••••••"></div>
+<div class="input-group"><label>تأكيد كلمة المرور</label><input type="password" id="owner-pass2" placeholder="••••••••"></div>
+</div>
+<div class="form-section">
+<h3>💰 نظام العمولة</h3>
+<div class="commission-box">
+<div class="c-title">عمولة وصّل من كل طلب مكتمل</div>
+<div class="c-val">10%</div>
+<div class="c-desc">مثال: لو الطلب 5,000 ريال<br>أنت تستلم <strong style="color:#1DB954">4,500 ريال</strong> ووصّل تأخذ 500 ريال<br><br><strong style="color:#f0f0f0">لو ما جاك طلب = ما دفعت شيء ✅</strong></div>
+</div>
+</div>
+<div class="agree-box" onclick="toggleAgree()">
+<div class="agree-check" id="agree-check"></div>
+<div class="agree-text">أوافق على <span>شروط وأحكام تطبيق وصّل</span> وأفهم نظام العمولة 10% من كل طلب مكتمل، وأن التسجيل مجاني بدون أي رسوم مسبقة.</div>
+</div>
+<button class="submit-btn" onclick="doRegister()">🏪 تسجيل المحل والانضمام لوصّل</button>
+<div class="login-link">عندك حساب؟ <a href="login.html">سجّل دخول</a></div>
+<div class="spacer"></div>
+</div>
+<div id="toast"></div>
+<script>
+let agreed=false;
+function selectType(el){document.querySelectorAll('.stype-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function selectCity(el){document.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function toggleAgree(){agreed=!agreed;const check=document.getElementById('agree-check');check.textContent=agreed?'✓':'';check.classList.toggle('checked',agreed);}
+function doRegister(){
+const name=document.getElementById('store-name').value.trim();
+const owner=document.getElementById('owner-name').value.trim();
+const phone=document.getElementById('owner-phone').value.trim();
+const pass=document.getElementById('owner-pass').value;
+const pass2=document.getElementById('owner-pass2').value;
+if(!name){showToast('⚠️ أدخل اسم المحل');return;}
+if(!owner){showToast('⚠️ أدخل اسمك الكامل');return;}
+if(!phone){showToast('⚠️ أدخل رقم هاتفك');return;}
+if(!pass){showToast('⚠️ أدخل كلمة المرور');return;}
+if(pass!==pass2){showToast('⚠️ كلمة المرور غير متطابقة');return;}
+if(!agreed){showToast('⚠️ يجب الموافقة على الشروط أولاً');return;}
+showToast('🎉 تم تسجيل محلك! سنتواصل معك قريباً');
+setTimeout(()=>window.location.href='store-dashboard.html',2500);
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>
